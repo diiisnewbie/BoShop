@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @Builder
+@EntityListeners(AuditingEntityListener.class)
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 public class Product {
     @Id
@@ -29,7 +31,8 @@ public class Product {
     String description;
     String brand;
     @Enumerated(EnumType.STRING)
-    ProductStatus status;
+    @Builder.Default
+    ProductStatus status = ProductStatus.ACTIVE;
     @Column(unique = true)
     String slug;
 

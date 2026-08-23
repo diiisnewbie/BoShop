@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/products")
 @RequiredArgsConstructor
@@ -16,9 +18,16 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<ProductResponse>> createProduct(CreateProductRequest request) {
+    public ResponseEntity<ApiResponse<ProductResponse>> createProduct(@RequestBody CreateProductRequest request) {
+
         ProductResponse productResponse = productService.createProduct(request);
         return ResponseEntity.ok(new ApiResponse<>("Product created successfully", productResponse));
+    }
+
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<ProductResponse>>> getAllProducts() {
+        List<ProductResponse> products = productService.getAll();
+        return ResponseEntity.ok(new ApiResponse<>("Products retrieved successfully", products));
     }
 
     @GetMapping("/{id}")

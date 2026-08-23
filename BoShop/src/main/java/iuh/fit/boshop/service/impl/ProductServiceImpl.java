@@ -10,12 +10,14 @@ import iuh.fit.boshop.model.Product;
 import iuh.fit.boshop.repository.ProductRepository;
 import iuh.fit.boshop.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
@@ -23,6 +25,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponse createProduct(CreateProductRequest request) {
+
+        log.info("Creating product with name: {}, slug: {}", request.name(), request.slug());
         if(productRepository.existsBySlug(request.slug())) {
             throw new SlugAlreadyExistsException("Slug already exists: " + request.slug());
         }
